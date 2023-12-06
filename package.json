@@ -55,6 +55,9 @@
     "@tarojs/shared": "3.6.19",
     "@tarojs/taro": "3.6.19",
     "axios": "^1.6.2",
+    "echarts": "^5.4.3",
+    "echarts-taro3-vue": "^1.0.5",
+    "echarts4taro3": "^1.6.0",
     "vue": "^3.3.8"
   },
   "devDependencies": {

@@ -4,6 +4,7 @@ export default defineAppConfig({
         'pages/wage/index',
         'pages/home/index',
         'pages/transaction/index',
+        'pages/table/index',
 
     ],
     window: {
