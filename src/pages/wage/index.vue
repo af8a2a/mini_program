@@ -13,14 +13,36 @@
             <nut-input class="nut-input-text" placeholder="请输入部门" type="text" />
         </nut-form-item>
     </nut-form>
-    <nut-space direction="vertical" fill>
-        <nut-button type="primary" @click="handleSubmit" block>搜索</nut-button>
-    </nut-space>
+    <nut-row>
+        <nut-col :span="24">
+            <nut-col :span="12">
+                <nut-button type="primary" @click="handleSubmit" block>搜索</nut-button>
+            </nut-col>
+            <nut-col :span="12">
+                <nut-button type="primary" @click="handleSubmit" block>添加</nut-button>
+            </nut-col>
+
+        </nut-col>
+    </nut-row>
+
+    <view class="container">
+        <view class="page-body">
+            <view class="page-section">
+                <view class="page-section-spacing">
+                    <li v-for="item in wages" :key="item.id">
+                        <strong>{{ item.name }},{{ item.finalWage }}</strong>
+                    </li>
+                </view>
+            </view>
+        </view>
+    </view>
 </template>
 <script setup>
-import { reactive } from 'vue';
-import axios from 'axios';
+import { Dongdong } from '@nutui/icons-vue-taro';
+import { Card } from '@nutui/nutui-taro';
 
+import { reactive, ref } from 'vue';
+import Taro from '@tarojs/taro'
 const basicData = reactive({
     id: '',
     name: '',
@@ -28,19 +50,63 @@ const basicData = reactive({
     tel: '',
     dept: ''
 });
+const wages = ref([
+    {
+        id: 1,
+        name: '张三',
+        code: '001',
+        tel: '12345678901',
+        dept: '研发部',
+        finalWage: 5000,
+    },
+    {
+        id: 2,
+        name: '张三',
+        code: '001',
+        tel: '12345678901',
+        dept: '研发部',
+        finalWage: 3000
+    },
+]);
 
-const handleSubmit = async () => {
-    try {
-        //todo
-        // 替换成你的后端API URL
-        const response = await this.$http.get('financial/wages/list', basicData);
-        // 处理后端返回的数据
-        console.log(response.data);
-    } catch (error) {
-        // 错误处理
-        console.error('请求失败:', error);
-    }
-};
+async function handleSubmit() {
+    wages.value = [];
+    Taro.request({
+        url: 'http://localhost:3000/financial/wages/list',
+        method: 'GET',
+    }).then(res => {
+        wages.value.push(res.data.list);
+        console.log(wages.value);
 
+
+    }).catch((err) => {
+        console.log(err);
+    })
+
+}
 </script>
-  
+<style>
+.scroll-view-item {
+    height: 300rpx;
+}
+
+.scroll-view-item_H {
+    display: inline-block;
+    width: 100%;
+    height: 300rpx;
+}
+
+.demo-text-1 {
+    background: #ccc;
+}
+
+.demo-text-2 {
+    background: #999;
+}
+
+.demo-text-3 {
+    background: #666;
+}
+</style>
+
+

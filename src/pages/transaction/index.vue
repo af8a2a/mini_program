@@ -1,16 +1,13 @@
 <template>
     <nut-form>
-        <nut-form-item label="购方名称">
+        <nut-form-item label="消费名">
             <nut-input v-model="basicData.name" class="nut-input-text" placeholder="请输入姓名" type="text" />
         </nut-form-item>
-        <nut-form-item label="销售方名称">
+        <nut-form-item label="财务变动">
             <nut-input v-model="basicData.age" class="nut-input-text" placeholder="请输入年龄" type="text" />
         </nut-form-item>
-        <nut-form-item label="发票号">
+        <nut-form-item label="消费日期">
             <nut-input v-model="basicData.tel" class="nut-input-text" placeholder="请输入联系电话" type="text" />
-        </nut-form-item>
-        <nut-form-item v-model="basicData.address" label="状态">
-            <nut-input class="nut-input-text" placeholder="请输入地址" type="text" />
         </nut-form-item>
     </nut-form>
     <nut-space direction="vertical" fill>
