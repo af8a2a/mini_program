@@ -3,7 +3,6 @@
     <nut-popup position="bottom" v-model:visible="show">
         <nut-date-picker v-model="currentDate" type="year-month" :min-date="minDate" :max-date="maxDate"
             @confirm="popupConfirm" :is-show-chinese="true">
-            <nut-button block type="primary" @click="fetchTransaction">确认</nut-button>
         </nut-date-picker>
     </nut-popup>
     <view class="container">
@@ -17,38 +16,40 @@
             </view>
         </view>
     </view>
-
 </template>
-<script>
+<script setup>
 import { DatePicker } from '@nutui/nutui-taro';
-import { reactive } from 'vue';
+import { ref } from 'vue';
 import Taro from '@tarojs/taro'
 
-export default {
-    data() {
-        return {
-            show: false,
-            minDate: new Date(2020, 0, 1),
-            maxDate: new Date(2025, 10, 1),
-            currentDate: new Date(2022, 4, 10, 10, 10),
-            transactions:[],
-        }
-    },
-    methods: {
-        fetchTransaction() {
-            this.show = false;
 
-            Taro.request({
-                url: 'http://localhost:3000/financial/transaction/list',
-                method: 'GET',
-            }).then(res => {
-                this.transactions = res.data.list;
-                console.log(this.transactions);
-            }).catch((err) => {
-                console.log(err);
-            })
+const show = ref(false);
+const popupDesc = ref();
+const minDate = new Date(2020, 0, 1);
+const maxDate = new Date(2025, 10, 1);
+const currentDate = new Date(2022, 4, 10, 10, 10);
+const transactions = ref([]);
+const popupConfirm = ({ selectedValue, selectedOptions }) => {
+    popupDesc.value = selectedOptions.map((val) => val.text).join('');
+    fetchTransaction();
+    show.value = false;
+};
+
+const fetchTransaction = () => {
+    Taro.request({
+        url: 'http://localhost:3000/financial/transaction/list',
+        method: 'GET',
+        data: {
+            issuingDate: currentDate
         }
-    }
+    }).then(res => {
+        transactions.value = res.data.list;
+        console.log(this.transactions);
+    }).catch((err) => {
+        console.log(err);
+    })
 }
+
+
 </script>
   

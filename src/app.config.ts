@@ -5,6 +5,8 @@ export default defineAppConfig({
         'pages/home/index',
         'pages/transaction/index',
         'pages/table/index',
+        'pages/tax/index',
+
 
     ],
     window: {
