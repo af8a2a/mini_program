@@ -9,7 +9,7 @@
         <nut-col>
             <nut-cell title="税率">
                 <template #desc>
-                    <nut-input-number v-model="value" step="0.1" decimal-places="1" />
+                    <nut-input-number v-model="taxRate" step="0.1" decimal-places="1" />
                 </template>
             </nut-cell>
         </nut-col>
@@ -17,14 +17,28 @@
     </nut-row>
     <nut-col :span="12">
             </nut-col>
-    <Button type="primary" @click="handleSubmit" >搜索</Button>
+            <nut-button type="primary" @click="handleSubmit" block>查询</nut-button>
     <nut-popup position="bottom" v-model:visible="show">
         <nut-date-picker v-model="currentDate" :min-date="minDate" :max-date="maxDate" @confirm="popupConfirm"
             :is-show-chinese="true">
         </nut-date-picker>
     </nut-popup>
+    <view class="container">
+        <view class="page-body">
+            <view class="page-section">
+                <view class="page-section-spacing">
+                    <li v-for="item in transactions" :key="item.date">
+                        <strong>明细:{{ item.incoming }},变动:{{ item.month }}</strong>
+                    </li>
+                    <li>总额:{{ total }}</li>
+                    <li>税额:{{ tax }}</li>
+                </view>
+            </view>
+        </view>
+    </view>
 
 </template>
+
 <script setup>
 import {ref } from 'vue';
 import Taro from '@tarojs/taro'
@@ -33,7 +47,11 @@ const show = ref(false);
 const popupDesc = ref();
 const minDate = new Date(2020, 0, 1);
 const maxDate = new Date(2025, 10, 1);
-const currentDate = new Date(2022, 4, 10, 10, 10);
+const currentDate = new Date();
+const transactions = ref('');
+const total = ref(0);
+const taxRate= ref(1);
+const tax= ref(1);
 const popupConfirm = ({ selectedValue, selectedOptions }) => {
     popupDesc.value = selectedOptions.map((val) => val.text).join('');
     show.value = false;
@@ -43,16 +61,22 @@ function handleSubmit() {
         url: 'http://localhost:3000/financial/transaction/sum',
         method: 'POST',
         data: {
-            Date: currentDate
+            date: currentDate
         }
     }).then(res => {
-        this.wages = res.data.list;
-        console.log(this.wages.value);
+        transactions.value = res.data.list;
+        let sum = 0;
+        for (let index = 0; index < res.data.list.length; index++) {
+            const element = res.data.list[index];
+            console.log(element.value);
 
+            sum += element.incoming;
+        }
+        total.value = sum;
+        tax.value = total.value * taxRate.value/100.0;
     }).catch((err) => {
         console.log(err);
     })
-
 };
 
 const value = ref(1);
