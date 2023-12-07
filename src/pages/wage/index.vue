@@ -32,8 +32,6 @@
     </view>
 </template>
 <script>
-import { Dongdong } from '@nutui/icons-vue-taro';
-import { Card } from '@nutui/nutui-taro';
 
 import { reactive, ref } from 'vue';
 import Taro from '@tarojs/taro'
@@ -66,48 +64,5 @@ export default {
 
     }
 }
-// const wages = ref([
-//     {
-//         id: 1,
-//         name: '张三',
-//         code: '001',
-//         tel: '12345678901',
-//         dept: '研发部',
-//         finalWage: 5000,
-//     },
-//     {
-//         id: 2,
-//         name: '张三',
-//         code: '001',
-//         tel: '12345678901',
-//         dept: '研发部',
-//         finalWage: 3000
-//     },
-// ]);
 
 </script>
-<style>
-.scroll-view-item {
-    height: 300rpx;
-}
-
-.scroll-view-item_H {
-    display: inline-block;
-    width: 100%;
-    height: 300rpx;
-}
-
-.demo-text-1 {
-    background: #ccc;
-}
-
-.demo-text-2 {
-    background: #999;
-}
-
-.demo-text-3 {
-    background: #666;
-}
-</style>
-
-
