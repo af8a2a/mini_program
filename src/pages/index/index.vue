@@ -43,6 +43,7 @@ function Login() {
                 password: password,
             }
         })
+        // Taro.setStorageSync({ key: 'company', data: company.text })
         Taro.navigateTo({ url: '/pages/home/index' });
     }
 }
