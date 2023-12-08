@@ -12,20 +12,37 @@
         </nut-form-item>
     </nut-form>
     <nut-space direction="vertical" fill>
-        <nut-button type="primary"  @click="Login" block>登录</nut-button>
+        <nut-button type="primary" @click="Login" block>登录</nut-button>
+        <nut-button type="primary" @click="Register" block>注册</nut-button>
+
     </nut-space>
 </template>
 <script setup>
-import { reactive ,ref} from 'vue';
+import { reactive, ref } from 'vue';
 import Taro from '@tarojs/taro'
 const username = ref('')
 const password = ref('')
 const company = ref('')
-
+function Register() {
+    if (username == '' || password == ''||company=='') {
+        //todo throw
+    }
+    else {
+        Taro.request({
+            method: 'POST',
+            url: 'http://localhost:3000/financial/user/register',
+            data: {
+                username: username.value,
+                password: password.value,
+                company: company.value,
+                type:'guest'
+            }
+        })
+        Taro.navigateTo({ url: '/pages/index/index' });
+    }
+    
+}
 function Login() {
-    console.log(username)
-    console.log(password)
-
     if (username == '' && password == '') {
         //todo throw
     }
@@ -43,7 +60,15 @@ function Login() {
                 password: password,
             }
         })
-        // Taro.setStorageSync({ key: 'company', data: company.text })
+        try {
+            Taro.setStorage({
+                key: "company",
+                data: company.value
+            })
+
+        } catch (error) {
+            console.log(error);
+        }
         Taro.navigateTo({ url: '/pages/home/index' });
     }
 }

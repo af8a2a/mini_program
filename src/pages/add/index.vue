@@ -1,67 +1,60 @@
 <template>
     <nut-row>
         <nut-col>
+            <nut-input placeholder="请输入名称" v-model="name" />
+        </nut-col>
+    </nut-row>
+
+    <nut-row>
+        <nut-col>
+            <nut-input placeholder="请输入金额（支持小数)" v-model="number" type="digit" />
+        </nut-col>
+    </nut-row>
+    <nut-row>
+        <nut-col>
             <nut-cell title="选择日期" :desc="popupDesc" @click="show = true"></nut-cell>
         </nut-col>
     </nut-row>
+
     <nut-row>
         <nut-col>
             <nut-cell title="请选择类型" :desc="desc" @click="show_type = true"></nut-cell>
         </nut-col>
     </nut-row>
     <nut-row>
-        <nut-col :span="12">
-            <nut-button type="primary" @click="fetchTransaction" block>查询</nut-button>
+        <nut-col>
+            <nut-button type="primary" @click="submitTransaction" block>提交</nut-button>
         </nut-col>
-        <nut-col :span="12">
-            <nut-button type="primary" @click="goToPage('/pages/add/index')" block>添加</nut-button>
-        </nut-col>
-
     </nut-row>
-
 
     <nut-popup position="bottom" v-model:visible="show">
         <nut-date-picker v-model="currentDate" type="year-month" :min-date="minDate" :max-date="maxDate"
             @confirm="popupConfirm" :is-show-chinese="true">
         </nut-date-picker>
     </nut-popup>
-
-    <view class="container">
-        <view class="page-body">
-            <view class="page-section">
-                <view class="page-section-spacing">
-                    <li v-for="item in transactions" :key="item.date">
-                        <strong>明细:{{ item.name }},变动:{{ item.incoming }},日期:{{ item.date }}</strong>
-                    </li>
-                </view>
-            </view>
-        </view>
-    </view>
-
     <nut-popup position="bottom" v-model:visible="show_type">
         <nut-picker v-model="value" :columns="columns" title="请选择类型" @confirm="confirm" @cancel="show_type = false">
         </nut-picker>
     </nut-popup>
 </template>
 <script setup>
-import { DatePicker } from '@nutui/nutui-taro';
-
-import { ref } from 'vue';
+import { ref, } from 'vue';
 import Taro from '@tarojs/taro'
+
+const name = ref('');
+const number = ref('');
 const value = ref(['收入']);
 const columns = ref([
     { text: '收入', value: '收入' },
     { text: '支出', value: '支出' },
 ]);
-const show_type = ref(false);
-const show = ref(false);
 const desc = ref();
 const popupDesc = ref();
+const show_type = ref(false);
+const show = ref(false);
+const currentDate = new Date();
 const minDate = new Date(2020, 0, 1);
 const maxDate = new Date(2025, 10, 1);
-const currentDate = new Date();
-const transactions = ref([]);
-
 const confirm = ({ selectedValue, selectedOptions }) => {
     desc.value = selectedOptions.map((val) => val.text).join(',');
     show_type.value = false;
@@ -73,26 +66,23 @@ const popupConfirm = ({ selectedValue, selectedOptions }) => {
     show.value = false;
 };
 
-const fetchTransaction = () => {
+const submitTransaction = () => {
     Taro.request({
-        url: 'http://localhost:3000/financial/transaction/list',
+        url: 'http://localhost:3000/financial/transaction/add',
         method: 'POST',
         data: {
-            company: Taro.getStorageSync('company').toString(),
+            name: name.value,
+            incoming: number.value,
             date: currentDate,
-            type: value.value.toString()
+            type: value.value.toString(),
+            company:Taro.getStorageSync('company').toString(),
         }
     }).then(res => {
-        transactions.value = res.data.list;
-        console.log(this.transactions);
+        Taro.navigateBack();
     }).catch((err) => {
         console.log(err);
     })
 }
 
-
-function goToPage(url) {
-    Taro.navigateTo({ url })
-}
 </script>
   

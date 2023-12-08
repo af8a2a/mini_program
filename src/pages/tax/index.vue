@@ -13,11 +13,9 @@
                 </template>
             </nut-cell>
         </nut-col>
-    
+
     </nut-row>
-    <nut-col :span="12">
-            </nut-col>
-            <nut-button type="primary" @click="handleSubmit" block>查询</nut-button>
+    <nut-button type="primary" @click="handleSubmit" block>查询</nut-button>
     <nut-popup position="bottom" v-model:visible="show">
         <nut-date-picker v-model="currentDate" :min-date="minDate" :max-date="maxDate" @confirm="popupConfirm"
             :is-show-chinese="true">
@@ -36,11 +34,10 @@
             </view>
         </view>
     </view>
-
 </template>
 
 <script setup>
-import {ref } from 'vue';
+import { ref } from 'vue';
 import Taro from '@tarojs/taro'
 
 const show = ref(false);
@@ -50,8 +47,8 @@ const maxDate = new Date(2025, 10, 1);
 const currentDate = new Date();
 const transactions = ref('');
 const total = ref(0);
-const taxRate= ref(1);
-const tax= ref(1);
+const taxRate = ref(1);
+const tax = ref(1);
 const popupConfirm = ({ selectedValue, selectedOptions }) => {
     popupDesc.value = selectedOptions.map((val) => val.text).join('');
     show.value = false;
@@ -73,7 +70,7 @@ function handleSubmit() {
             sum += element.incoming;
         }
         total.value = sum;
-        tax.value = total.value * taxRate.value/100.0;
+        tax.value = total.value * taxRate.value / 100.0;
     }).catch((err) => {
         console.log(err);
     })

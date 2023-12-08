@@ -13,7 +13,7 @@
                 <nut-button type="primary" @click="handleSubmit" block>搜索</nut-button>
             </nut-col>
             <nut-col :span="12">
-                <nut-button type="primary" @click="handleSubmit" block>添加</nut-button>
+                <nut-button type="primary" @click="goToPage('/pages/add/index')" block>添加</nut-button>
             </nut-col>
 
         </nut-col>
@@ -48,12 +48,16 @@ export default {
 
     },
     methods: {
+        goToPage(url) {
+            Taro.navigateTo({ url })
+        },
+
         handleSubmit() {
             Taro.request({
                 url: 'http://localhost:3000/financial/wages/list',
                 method: 'GET',
             }).then(res => {
-                this.wages=res.data.list;
+                this.wages = res.data.list;
                 console.log(this.wages.value);
 
             }).catch((err) => {
