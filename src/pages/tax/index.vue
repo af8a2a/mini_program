@@ -25,15 +25,13 @@
         <view class="page-body">
             <view class="page-section">
                 <view class="page-section-spacing">
-                    <li v-for="item in transactions" :key="item.date">
-                        <strong>明细:{{ item.incoming }},变动:{{ item.month }}</strong>
-                    </li>
-                    <li>总额:{{ total }}</li>
-                    <li>税额:{{ tax }}</li>
+                    <nut-table :columns="columns" :data="transactions" bordered=false></nut-table>
                 </view>
             </view>
         </view>
     </view>
+    <li>总额:{{ total }}</li>
+    <li>税额:{{ tax }}</li>
 </template>
 
 <script setup>
@@ -49,28 +47,50 @@ const transactions = ref('');
 const total = ref(0);
 const taxRate = ref(1);
 const tax = ref(1);
+
+const columns = [
+    {
+        title: '月份',
+        key: 'month',
+        align: 'center'
+    },
+    {
+        title: '明细',
+        key: 'incoming'
+    },
+    {
+        title: '税款',
+        key: 'tax'
+    },
+];
+
+
+
 const popupConfirm = ({ selectedValue, selectedOptions }) => {
     popupDesc.value = selectedOptions.map((val) => val.text).join('');
     show.value = false;
 };
-function handleSubmit() {
-    Taro.request({
+async function handleSubmit() {
+    await Taro.request({
         url: 'http://localhost:3000/financial/transaction/sum',
         method: 'POST',
         data: {
             date: currentDate
         }
     }).then(res => {
-        transactions.value = res.data.list;
         let sum = 0;
+
         for (let index = 0; index < res.data.list.length; index++) {
             const element = res.data.list[index];
-            console.log(element.value);
-
+            element.tax=element.incoming*taxRate.value/100.0;
             sum += element.incoming;
         }
+        console.log(sum);
+        transactions.value = res.data.list;
+
         total.value = sum;
         tax.value = total.value * taxRate.value / 100.0;
+
     }).catch((err) => {
         console.log(err);
     })
