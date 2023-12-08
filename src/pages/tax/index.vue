@@ -17,8 +17,8 @@
     </nut-row>
     <nut-button type="primary" @click="handleSubmit" block>查询</nut-button>
     <nut-popup position="bottom" v-model:visible="show">
-        <nut-date-picker v-model="currentDate" :min-date="minDate" :max-date="maxDate" @confirm="popupConfirm"
-            :is-show-chinese="true">
+        <nut-date-picker type="year-month" v-model="currentDate" :min-date="minDate" :max-date="maxDate"
+            @confirm="popupConfirm" :is-show-chinese="true">
         </nut-date-picker>
     </nut-popup>
     <view class="container">
@@ -82,7 +82,7 @@ async function handleSubmit() {
 
         for (let index = 0; index < res.data.list.length; index++) {
             const element = res.data.list[index];
-            element.tax=element.incoming*taxRate.value/100.0;
+            element.tax = element.incoming * taxRate.value / 100.0;
             sum += element.incoming;
         }
         console.log(sum);
