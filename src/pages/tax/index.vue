@@ -42,7 +42,7 @@ const show = ref(false);
 const popupDesc = ref();
 const minDate = new Date(2020, 0, 1);
 const maxDate = new Date(2025, 10, 1);
-const currentDate = new Date();
+const currentDate = ref(new Date());
 const transactions = ref('');
 const total = ref(0);
 const taxRate = ref(1);
@@ -75,7 +75,7 @@ async function handleSubmit() {
         url: 'http://localhost:3000/financial/transaction/sum',
         method: 'POST',
         data: {
-            date: currentDate
+            date: currentDate.value
         }
     }).then(res => {
         let sum = 0;
