@@ -60,7 +60,6 @@ const name = ref('');
 const name_change = ref('');
 
 const money = ref('');
-const code = ref('');
 const popupDesc = ref('');
 const show = ref(false);
 const show_overlay = ref(false);

@@ -5,6 +5,8 @@ export default defineAppConfig({
         'pages/wage/index',
         'pages/home/index',
         'pages/transaction/index',
+        'pages/transaction/add',
+
         'pages/table/index',
         'pages/wage/add',
 
