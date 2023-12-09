@@ -57,6 +57,10 @@ const popupConfirm = ({ selectedValue, selectedOptions }) => {
     show.value = false;
 };
 
+function click() {
+    
+}
+
 const submitTransaction = () => {
     Taro.request({
         url: 'http://localhost:3000/financial/wages/add',
