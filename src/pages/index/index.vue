@@ -51,7 +51,30 @@ function Login() {
     }
     else if (password == '') {
 
-    } else {
+    } 
+    else if (company.value == 'admin') {
+        const arr = Taro.request({
+            method: 'POST',
+            url: 'http://localhost:3000/financial/user/login',
+            data: {
+                username: username,
+                password: password,
+            }
+        })
+        try {
+            Taro.setStorage({
+                key: "company",
+                data: company.value
+            })
+
+        } catch (error) {
+            console.log(error);
+        }
+        Taro.navigateTo({ url: '/pages/admin/index' });
+
+    }
+
+    else {
         const arr = Taro.request({
             method: 'POST',
             url: 'http://localhost:3000/financial/user/login',

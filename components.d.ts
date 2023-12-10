@@ -15,7 +15,6 @@ declare module 'vue' {
     NutFormItem: typeof import('@nutui/nutui-taro')['FormItem']
     NutInput: typeof import('@nutui/nutui-taro')['Input']
     NutInputNumber: typeof import('@nutui/nutui-taro')['InputNumber']
-    NutOverlay: typeof import('@nutui/nutui-taro')['Overlay']
     NutPicker: typeof import('@nutui/nutui-taro')['Picker']
     NutPopup: typeof import('@nutui/nutui-taro')['Popup']
     NutRow: typeof import('@nutui/nutui-taro')['Row']
